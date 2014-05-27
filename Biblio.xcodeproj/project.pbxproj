@@ -18,6 +18,7 @@
 		67C9B6AE193357B5009EEE19 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67C9B68D193357B5009EEE19 /* Cocoa.framework */; };
 		67C9B6B6193357B5009EEE19 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 67C9B6B4193357B5009EEE19 /* InfoPlist.strings */; };
 		67C9B6B8193357B5009EEE19 /* BiblioTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C9B6B7193357B5009EEE19 /* BiblioTests.m */; };
+		67C9B6C3193370B9009EEE19 /* BIBDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C9B6C2193370B9009EEE19 /* BIBDataSource.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,8 @@
 		67C9B6B3193357B5009EEE19 /* BiblioTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BiblioTests-Info.plist"; sourceTree = "<group>"; };
 		67C9B6B5193357B5009EEE19 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		67C9B6B7193357B5009EEE19 /* BiblioTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BiblioTests.m; sourceTree = "<group>"; };
+		67C9B6C1193370B9009EEE19 /* BIBDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BIBDataSource.h; sourceTree = "<group>"; };
+		67C9B6C2193370B9009EEE19 /* BIBDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BIBDataSource.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +120,8 @@
 			children = (
 				67C9B69F193357B5009EEE19 /* BIBAppDelegate.h */,
 				67C9B6A0193357B5009EEE19 /* BIBAppDelegate.m */,
+				67C9B6C1193370B9009EEE19 /* BIBDataSource.h */,
+				67C9B6C2193370B9009EEE19 /* BIBDataSource.m */,
 				67C9B6A2193357B5009EEE19 /* MainMenu.xib */,
 				67C9B6A5193357B5009EEE19 /* Images.xcassets */,
 				67C9B694193357B5009EEE19 /* Supporting Files */,
@@ -255,6 +260,7 @@
 			files = (
 				67C9B6A1193357B5009EEE19 /* BIBAppDelegate.m in Sources */,
 				67C9B69A193357B5009EEE19 /* main.m in Sources */,
+				67C9B6C3193370B9009EEE19 /* BIBDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
