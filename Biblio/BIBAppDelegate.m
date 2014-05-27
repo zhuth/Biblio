@@ -11,7 +11,7 @@
 @implementation BIBAppDelegate
 
 NSArray* fields;
-
+NSDictionary *plist;
 NSURL* filename = nil;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -30,7 +30,20 @@ NSURL* filename = nil;
     
     [_mainTable setDataSource:bibEntries];
     
+    // init format strings
+    NSString *path=[[NSBundle mainBundle]pathForResource:@"Settings" ofType:@".plist"];
+    plist = [[NSDictionary alloc]initWithContentsOfFile:path];
+    
     // Insert code here to initialize your application
+}
+
+- (NSString*)getLocale:(NSMutableDictionary *)d{
+    NSString* lang = [d objectForKey:@"lang"];
+    if (lang && [lang isEqualTo:@"chinese"]) return @"zh";
+    lang = [d objectForKey:@"title"];
+    unichar uc = [lang characterAtIndex:0];
+    if ((uc >= 'a' && uc <= 'z') || (uc >= 'A' && uc <= 'Z')) return @"en";
+    return @"zh";
 }
 
 - (IBAction)_newMenuItemClick:(id)sender {
@@ -98,11 +111,14 @@ NSURL* filename = nil;
     [self saveBib];
 }
 
-- (void)writeToPasteboard:(NSString*) string{
+- (void)writeToPasteboard:(NSMutableAttributedString*) string{
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
     [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType]
                owner:self];
-    [pb setString:string forType:NSStringPboardType];
+    NSData* myStringData = [string RTFDFromRange:NSMakeRange(0, string.length)
+                              documentAttributes:nil];
+    [pb setString:[string string] forType:NSStringPboardType];
+    [pb setData:myStringData forType:NSRTFDPboardType];
 }
 
 - (NSString*)readFromPasteboard {
@@ -154,16 +170,59 @@ NSURL* filename = nil;
 - (IBAction)_copyKeyMenuItemClick:(id)sender {
     NSMutableDictionary *d = [self currentItem];
     if (!d) return;
-    NSString *key = [NSString stringWithFormat:@"\\cite{%@}", [d objectForKey:@"key"]];
-    [self writeToPasteboard:key];
+    NSString *key = [self formatString:[plist objectForKey:[NSString stringWithFormat:@"%@-key", [self getLocale:d]]]
+                                  dict:d];
+    NSMutableAttributedString *akey = [NSMutableAttributedString new];
+    akey = [akey initWithString:key];
+    [self writeToPasteboard:akey];
 }
 
 - (IBAction)_copyMenuItemClick:(id)sender {
     NSMutableDictionary *d = [self currentItem];
     if (!d) return;
-    [[NSAlert alertWithMessageText:@"not implemented yet" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"not implemented"] runModal];
-    NSString *full = [NSString stringWithFormat:@"%@", [d objectForKey:@"key"]];
+    NSString *html = [plist objectForKey:[NSString stringWithFormat:@"%@-%@", [self getLocale:d], [d objectForKey:@"type"]]];
+    if (!html) {
+        html = [plist objectForKey:[NSString stringWithFormat:@"%@-default", [self getLocale:d]]];
+    }
+    if (!html) return;
+    html = [self formatString:html dict:d];
+    NSData *htmlData = [html dataUsingEncoding:NSUnicodeStringEncoding];
+    NSMutableAttributedString *full = [[NSMutableAttributedString new] initWithHTML:htmlData documentAttributes:nil];
     [self writeToPasteboard:full];
+}
+
+- (IBAction)_prefMenuItemClick:(id)sender {
+
+}
+
+-(NSString*) formatString:(NSString*) format dict:(NSMutableDictionary*) dict {
+    format = [NSString stringWithFormat:@"%@{", format];
+    NSMutableString *s = [NSMutableString new];
+    NSInteger lastPos = 0;
+    for (NSInteger i = 0 ; i < [format length]; ++i) {
+        if ([format characterAtIndex:i] == '{') {
+            [s appendString:[format substringWithRange:NSMakeRange(lastPos, i - lastPos)]];
+            lastPos = ++i;
+            while (i < [format length] && [format characterAtIndex:i] != '}') ++i;
+            if (i >= [format length]) break;
+            NSString *key = [format substringWithRange:NSMakeRange(lastPos, i - lastPos)];
+            NSString *val = [dict objectForKey:key];
+            if (val)
+                [s appendString:val];
+            else {
+                NSMutableString* authors = [dict objectForKey:@"author"];
+                if ([key isEqualTo:@"authors"]) {
+                    [authors replaceOccurrencesOfString:@" and " withString:@"," options:NSLiteralSearch range:NSMakeRange(0, [authors length])];
+                    [s appendString:authors];
+                } else if ([key isEqualTo:@"author1"]) {
+                    NSString* a1 = [[authors componentsSeparatedByString:@" and "] objectAtIndex:0];
+                    [s appendString:a1];
+                }
+            }
+            lastPos = i+1;
+        }
+    }
+    return s;
 }
 
 -(void)parseBibcontent:(NSString*)content {
@@ -230,6 +289,7 @@ NSURL* filename = nil;
                 whitespaceBefore = NO;
                 while (i < [content length] && [content characterAtIndex:i] != '\r' && [content characterAtIndex:i] != '\n')
                     ++i;
+                --i;
                 break;
             case '=':
                 whitespaceBefore = NO;

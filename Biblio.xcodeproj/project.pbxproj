@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		675AA17A1934B8EF00762767 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 675AA1791934B8EF00762767 /* Settings.plist */; };
 		67C9B68E193357B5009EEE19 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67C9B68D193357B5009EEE19 /* Cocoa.framework */; };
 		67C9B698193357B5009EEE19 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 67C9B696193357B5009EEE19 /* InfoPlist.strings */; };
 		67C9B69A193357B5009EEE19 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C9B699193357B5009EEE19 /* main.m */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		675AA1791934B8EF00762767 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 		67C9B68A193357B5009EEE19 /* Biblio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biblio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		67C9B68D193357B5009EEE19 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		67C9B690193357B5009EEE19 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -137,6 +139,7 @@
 				67C9B699193357B5009EEE19 /* main.m */,
 				67C9B69B193357B5009EEE19 /* Biblio-Prefix.pch */,
 				67C9B69C193357B5009EEE19 /* Credits.rtf */,
+				675AA1791934B8EF00762767 /* Settings.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				67C9B6A6193357B5009EEE19 /* Images.xcassets in Resources */,
 				67C9B69E193357B5009EEE19 /* Credits.rtf in Resources */,
 				67C9B6A4193357B5009EEE19 /* MainMenu.xib in Resources */,
+				675AA17A1934B8EF00762767 /* Settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +477,7 @@
 				67C9B6BD193357B5009EEE19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		67C9B6BE193357B5009EEE19 /* Build configuration list for PBXNativeTarget "BiblioTests" */ = {
 			isa = XCConfigurationList;
@@ -481,6 +486,7 @@
 				67C9B6C0193357B5009EEE19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>en-default</key>
+	<string>{author}. {title}. &lt;i&gt;{journal}&lt;/i&gt;. ({year}) &lt;b&gt;{volume}&lt;/b&gt;({number}). pp.{pages}</string>
+	<key>en-book</key>
+	<string>{author}. &lt;i&gt;{title}&lt;/i&gt;. {publisher}. {year}. pp.{pages}</string>
+	<key>zh-default</key>
+	<string>{author}：{title}，《{journal}》，{year}（{number}），页{pages}。</string>
+	<key>zh-book</key>
+	<string>{author}：《{title}》，{publisher}，页{pages}。</string>
+	<key>en-key</key>
+	<string>({author1}, {year})</string>
+	<key>zh-key</key>
+	<string>（{author1}，{year}）</string>
+</dict>
+</plist>

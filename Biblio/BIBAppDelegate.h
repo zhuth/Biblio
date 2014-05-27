@@ -14,6 +14,7 @@
 }
 
 @property (assign) IBOutlet NSWindow *window;
+@property (unsafe_unretained) IBOutlet NSWindow *prefWindow;
 
 @property (weak) IBOutlet NSScrollView *tableScrollView;
 @property (weak) IBOutlet NSTableView *mainTable;
@@ -22,5 +23,6 @@
 - (IBAction)_pasteMenuItemClick:(id)sender;
 - (IBAction)_copyKeyMenuItemClick:(id)sender;
 - (IBAction)_copyMenuItemClick:(id)sender;
+- (IBAction)_prefMenuItemClick:(id)sender;
 - (void)parseBibcontent:(NSString*)content;
 @end
