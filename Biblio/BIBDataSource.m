@@ -116,11 +116,11 @@ void stringCallback(CGPDFScannerRef inScanner, void *userInfo)
     myTable = CGPDFOperatorTableCreate();
     
     CGPDFOperatorTableSetCallback(myTable, "TJ", arrayCallback);
-    CGPDFOperatorTableSetCallback(myTable, "Tj", stringCallback);
-    
-    NSMutableDictionary *entry = [NSMutableDictionary new];
+    CGPDFOperatorTableSetCallback(myTable, "Tj", stringCallback);    
     
     for(NSURL *url in urls) {
+        NSMutableDictionary *entry = [NSMutableDictionary new];
+
         tmpStr = [NSMutableString new];
         CGPDFDocumentRef myDocument;
         myDocument = CGPDFDocumentCreateWithURL((CFURLRef)url);// 1
