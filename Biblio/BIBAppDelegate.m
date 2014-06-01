@@ -31,6 +31,8 @@
     [_mainTable setTarget:self];
     [_mainTable setDoubleAction:@selector(rowDoubleClicked:)];
     
+    [_mainTable registerForDraggedTypes:[NSArray arrayWithObject:(NSString*)kUTTypeFileURL]];
+    
     // init format strings
     NSString *path=[[NSBundle mainBundle]pathForResource:@"Settings" ofType:@".plist"];
     plist = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
@@ -41,6 +43,7 @@
     
     // init pdfview
     [_pdfview setAllowsDragging:YES];
+    
     // Insert code here to initialize your application
 }
 
@@ -258,6 +261,11 @@
     }
 }
 
+- (IBAction)_newEntryMenuItemClick:(id)sender {
+    [bibEntries add:[NSMutableDictionary new]];
+    [_mainTable reloadData];
+}
+
 - (NSString *)input: (NSString *)prompt defaultValue: (NSString *)defaultValue {
     NSAlert *alert = [NSAlert alertWithMessageText: prompt
                                      defaultButton:@"OK"
@@ -318,6 +326,9 @@
                 }
             } else if ([key isEqualTo:@"author1"]) {
                 NSString* a1 = [[authors componentsSeparatedByString:@" and "] objectAtIndex:0];
+                NSRange rg = [a1 rangeOfString:@","];
+                if (rg.location != NSNotFound)
+                    a1 = [a1 substringToIndex:rg.location];
                 [s appendString:a1];
             } else if ([key isEqualTo:@"pages"]) {
                 NSString *pages = [[dict objectForKey:key] stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
@@ -396,6 +407,7 @@
                         [bibEntries add:entry];
                     }
                     entry = [NSMutableDictionary new];
+                    [entry setValue:[NSString stringWithFormat:@"k%ld", time(0)] forKey:@"key"];
                     NSLog(@"new entry");
                     sField = [NSMutableString stringWithString:@"type"];
                     sValue = [NSMutableString new];

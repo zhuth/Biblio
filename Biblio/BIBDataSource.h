@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Quartz/Quartz.h>
 
 @interface BIBDataSource : NSObject<NSTableViewDataSource> {
     NSMutableArray* _entries;
@@ -25,5 +26,7 @@ objectValueForTableColumn:(NSTableColumn *)aTableColumn
 - (void)remove:(NSUInteger) index;
 
 - (NSMutableDictionary*)objectAt:(NSUInteger) index;
+
+- (NSDragOperation)tableView:(NSTableView *)aTableView validateDrop:(id < NSDraggingInfo >)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)operation;
 
 @end

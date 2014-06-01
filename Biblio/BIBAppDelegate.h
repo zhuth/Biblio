@@ -36,5 +36,6 @@
 - (IBAction)_copyKeyMenuItemClick:(id)sender;
 - (IBAction)_copyMenuItemClick:(id)sender;
 - (IBAction)_prefMenuItemClick:(id)sender;
+- (IBAction)_newEntryMenuItemClick:(id)sender;
 - (void)parseBibcontent:(NSString*)content;
 @end

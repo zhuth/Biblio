@@ -112,17 +112,22 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Edit" id="W48-6f-4Dl">
                         <items>
-                            <menuItem title="Copy Key" keyEquivalent="x" id="uRl-iY-unG">
+                            <menuItem title="New Entry" keyEquivalent="a" id="qu4-Pt-DwH">
+                                <connections>
+                                    <action selector="_newEntryMenuItemClick:" target="Voe-Tx-rLC" id="6GH-Nu-CwT"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Copy Key" keyEquivalent="X" id="uRl-iY-unG">
                                 <connections>
                                     <action selector="_copyKeyMenuItemClick:" target="Voe-Tx-rLC" id="GZX-ML-e50"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Copy" keyEquivalent="c" id="x3v-GG-iWU">
+                            <menuItem title="Copy" keyEquivalent="C" id="x3v-GG-iWU">
                                 <connections>
                                     <action selector="_copyMenuItemClick:" target="Voe-Tx-rLC" id="9V1-c6-aUK"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Paste" keyEquivalent="v" id="gVA-U4-sdL">
+                            <menuItem title="Paste" keyEquivalent="V" id="gVA-U4-sdL">
                                 <connections>
                                     <action selector="_pasteMenuItemClick:" target="Voe-Tx-rLC" id="J7c-dh-a91"/>
                                 </connections>
