@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface BIBDataSource : NSObject<NSTableViewDataSource> {
-    NSMutableArray* entries;
+    NSMutableArray* _entries;
 }
 
 - (void)initWithEntries:(NSMutableArray*) entries;

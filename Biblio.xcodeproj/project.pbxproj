@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6755246519372E22006A1421 /* BIBDIctionaryTableSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6755246419372E22006A1421 /* BIBDIctionaryTableSource.m */; };
+		67586DB3193570090065ADC3 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 67586DB2193570090065ADC3 /* Preferences.xib */; };
 		675AA17A1934B8EF00762767 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 675AA1791934B8EF00762767 /* Settings.plist */; };
+		67C31BAF1935B4D70093E058 /* BIBPrefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C31BAE1935B4D70093E058 /* BIBPrefWindowController.m */; };
 		67C9B68E193357B5009EEE19 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67C9B68D193357B5009EEE19 /* Cocoa.framework */; };
 		67C9B698193357B5009EEE19 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 67C9B696193357B5009EEE19 /* InfoPlist.strings */; };
 		67C9B69A193357B5009EEE19 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C9B699193357B5009EEE19 /* main.m */; };
@@ -33,7 +36,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6755246319372E22006A1421 /* BIBDIctionaryTableSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BIBDIctionaryTableSource.h; path = ../BIBDIctionaryTableSource.h; sourceTree = "<group>"; };
+		6755246419372E22006A1421 /* BIBDIctionaryTableSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BIBDIctionaryTableSource.m; path = ../BIBDIctionaryTableSource.m; sourceTree = "<group>"; };
+		67586DB2193570090065ADC3 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		675AA1791934B8EF00762767 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
+		67C31BAD1935B4D70093E058 /* BIBPrefWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BIBPrefWindowController.h; sourceTree = "<group>"; };
+		67C31BAE1935B4D70093E058 /* BIBPrefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BIBPrefWindowController.m; sourceTree = "<group>"; };
 		67C9B68A193357B5009EEE19 /* Biblio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biblio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		67C9B68D193357B5009EEE19 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		67C9B690193357B5009EEE19 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -120,6 +128,8 @@
 		67C9B693193357B5009EEE19 /* Biblio */ = {
 			isa = PBXGroup;
 			children = (
+				6755246319372E22006A1421 /* BIBDIctionaryTableSource.h */,
+				6755246419372E22006A1421 /* BIBDIctionaryTableSource.m */,
 				67C9B69F193357B5009EEE19 /* BIBAppDelegate.h */,
 				67C9B6A0193357B5009EEE19 /* BIBAppDelegate.m */,
 				67C9B6C1193370B9009EEE19 /* BIBDataSource.h */,
@@ -127,6 +137,9 @@
 				67C9B6A2193357B5009EEE19 /* MainMenu.xib */,
 				67C9B6A5193357B5009EEE19 /* Images.xcassets */,
 				67C9B694193357B5009EEE19 /* Supporting Files */,
+				67586DB2193570090065ADC3 /* Preferences.xib */,
+				67C31BAD1935B4D70093E058 /* BIBPrefWindowController.h */,
+				67C31BAE1935B4D70093E058 /* BIBPrefWindowController.m */,
 			);
 			path = Biblio;
 			sourceTree = "<group>";
@@ -243,6 +256,7 @@
 				67C9B6A6193357B5009EEE19 /* Images.xcassets in Resources */,
 				67C9B69E193357B5009EEE19 /* Credits.rtf in Resources */,
 				67C9B6A4193357B5009EEE19 /* MainMenu.xib in Resources */,
+				67586DB3193570090065ADC3 /* Preferences.xib in Resources */,
 				675AA17A1934B8EF00762767 /* Settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,8 +276,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6755246519372E22006A1421 /* BIBDIctionaryTableSource.m in Sources */,
 				67C9B6A1193357B5009EEE19 /* BIBAppDelegate.m in Sources */,
 				67C9B69A193357B5009EEE19 /* main.m in Sources */,
+				67C31BAF1935B4D70093E058 /* BIBPrefWindowController.m in Sources */,
 				67C9B6C3193370B9009EEE19 /* BIBDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,41 +10,39 @@
 
 @implementation BIBDataSource
 
-NSMutableArray* entries;
-
 - (void)initWithEntries:(NSMutableArray*) a_entries {
-    entries = a_entries;
+    _entries = a_entries;
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return entries.count;
+    return _entries.count;
 }
 
 - (id)tableView:(NSTableView *)aTableView
 objectValueForTableColumn:(NSTableColumn *)aTableColumn
             row:(NSInteger)row {
-    NSMutableDictionary *o = (NSMutableDictionary*) [entries objectAtIndex:row];
+    NSMutableDictionary *o = (NSMutableDictionary*) [_entries objectAtIndex:row];
     if (!o) return nil;
     
     return [o objectForKey:aTableColumn.identifier];
 }
 
 - (void)add:(NSMutableDictionary *)dict {
-    [entries addObject:dict];
+    [_entries addObject:dict];
 }
 
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
-    NSMutableDictionary *dict = (NSMutableDictionary*)[entries objectAtIndex:rowIndex];
+    NSMutableDictionary *dict = (NSMutableDictionary*)[_entries objectAtIndex:rowIndex];
     [dict setValue:anObject forKey:aTableColumn.identifier];
     [aTableView reloadData];
 }
 
 - (void)remove:(NSUInteger)index {
-    [entries removeObjectAtIndex:index];
+    [_entries removeObjectAtIndex:index];
 }
 
 - (NSMutableDictionary*)objectAt:(NSUInteger) index {
-    return [entries objectAtIndex:index];
+    return [_entries objectAtIndex:index];
 }
 
 @end

@@ -9,15 +9,16 @@
 #import <Cocoa/Cocoa.h>
 #import "BIBDataSource.h"
 
-@interface BIBAppDelegate : NSObject <NSApplicationDelegate> {
+@interface BIBAppDelegate : NSObject <NSApplicationDelegate, NSTableViewDelegate> {
     IBOutlet BIBDataSource *bibEntries;
 }
 
 @property (assign) IBOutlet NSWindow *window;
-@property (unsafe_unretained) IBOutlet NSWindow *prefWindow;
-
 @property (weak) IBOutlet NSScrollView *tableScrollView;
+@property (weak) IBOutlet NSTableView *selTable;
 @property (weak) IBOutlet NSTableView *mainTable;
+
+
 @property (weak) IBOutlet NSTableHeaderView *tableHeader;
 - (IBAction)_deleteMenuItemClick:(id)sender;
 - (IBAction)_pasteMenuItemClick:(id)sender;

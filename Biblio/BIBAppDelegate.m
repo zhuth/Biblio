@@ -7,12 +7,16 @@
 //
 
 #import "BIBAppDelegate.h"
+#import "BIBPrefWindowController.h"
+#import "BIBDictionaryTableSource.h"
 
 @implementation BIBAppDelegate
 
 NSArray* fields;
-NSDictionary *plist;
+NSMutableDictionary *plist;
+BIBDIctionaryTableSource *bibEntry;
 NSURL* filename = nil;
+BIBPrefWindowController *prefWindowControl = nil;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -32,8 +36,11 @@ NSURL* filename = nil;
     
     // init format strings
     NSString *path=[[NSBundle mainBundle]pathForResource:@"Settings" ofType:@".plist"];
-    plist = [[NSDictionary alloc]initWithContentsOfFile:path];
+    plist = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
     
+    bibEntry = [BIBDIctionaryTableSource alloc];
+    
+    [_selTable setDataSource:bibEntry];
     // Insert code here to initialize your application
 }
 
@@ -48,10 +55,26 @@ NSURL* filename = nil;
 
 - (IBAction)_newMenuItemClick:(id)sender {
     filename = nil;
-    bibEntries = [BIBDataSource new];
+    bibEntries = [[BIBDataSource alloc] init];
     [bibEntries initWithEntries:[NSMutableArray new]];
     [_mainTable setDataSource:bibEntries];
     [_mainTable reloadData];
+    [_mainTable setDelegate:self];
+}
+
+- (void) tableViewSelectionDidChange: (NSNotification *) notification
+{
+    NSInteger row = [_mainTable selectedRow];
+    
+    if (row == -1) {
+        //do stuff for the no-rows-selected case
+    }
+    else {
+        [bibEntry initWithDictionary:[bibEntries objectAt:row]];
+        [_selTable reloadData];
+        // do stuff for the selected row
+    }
+    
 }
 
 - (IBAction)_openMenuItemClick:(id)sender {
@@ -172,7 +195,7 @@ NSURL* filename = nil;
     if (!d) return;
     NSString *key = [self formatString:[plist objectForKey:[NSString stringWithFormat:@"%@-key", [self getLocale:d]]]
                                   dict:d];
-    NSMutableAttributedString *akey = [NSMutableAttributedString new];
+    NSMutableAttributedString *akey = [[NSMutableAttributedString alloc] init];
     akey = [akey initWithString:key];
     [self writeToPasteboard:akey];
 }
@@ -187,18 +210,62 @@ NSURL* filename = nil;
     if (!html) return;
     html = [self formatString:html dict:d];
     NSData *htmlData = [html dataUsingEncoding:NSUnicodeStringEncoding];
-    NSMutableAttributedString *full = [[NSMutableAttributedString new] initWithHTML:htmlData documentAttributes:nil];
+    NSMutableAttributedString *full = [[[NSMutableAttributedString alloc] init] initWithHTML:htmlData documentAttributes:nil];
     [self writeToPasteboard:full];
 }
 
 - (IBAction)_prefMenuItemClick:(id)sender {
+    prefWindowControl = [[BIBPrefWindowController alloc] initWithWindowNibName:@"Preferences"];
+    [prefWindowControl showWindow:self];
+    [prefWindowControl initWithPrefDict:plist];
+}
 
+- (IBAction)_findMenuItemClick:(id)sender {
+    NSString *sf = [self input:@"Search for..." defaultValue:@""];
+    if (!sf || [sf isEqualTo:@""]) return;
+    
+    [_mainTable deselectAll:nil];
+    NSInteger count = [bibEntries numberOfRowsInTableView:nil];
+    for(NSInteger i = 0; i < count; ++i)
+    {
+        for(NSTableColumn *col in [_mainTable tableColumns]) {
+            NSString* p = [bibEntries tableView:nil objectValueForTableColumn:col row:i];
+            if (!p) continue;
+            if ([p rangeOfString:sf].location != NSNotFound) {
+                [_mainTable selectRowIndexes:[[NSIndexSet alloc] initWithIndex:i]  byExtendingSelection:YES];
+            }
+        }
+    }
+}
+
+- (NSString *)input: (NSString *)prompt defaultValue: (NSString *)defaultValue {
+    NSAlert *alert = [NSAlert alertWithMessageText: prompt
+                                     defaultButton:@"OK"
+                                   alternateButton:@"Cancel"
+                                       otherButton:nil
+                         informativeTextWithFormat:@""];
+    
+    NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
+    [input setStringValue:defaultValue];
+    [alert setAccessoryView:input];
+    NSInteger button = [alert runModal];
+    if (button == NSAlertDefaultReturn) {
+        [input validateEditing];
+        return [input stringValue];
+    } else if (button == NSAlertAlternateReturn) {
+        return nil;
+    } else {
+        NSAssert1(NO, @"Invalid input dialog button %ld", (long)button);
+        return nil;
+    }
 }
 
 -(NSString*) formatString:(NSString*) format dict:(NSMutableDictionary*) dict {
     format = [NSString stringWithFormat:@"%@{", format];
     NSMutableString *s = [NSMutableString new];
     NSInteger lastPos = 0;
+    NSString *locale = [self getLocale:dict];
+    
     for (NSInteger i = 0 ; i < [format length]; ++i) {
         if ([format characterAtIndex:i] == '{') {
             [s appendString:[format substringWithRange:NSMakeRange(lastPos, i - lastPos)]];
@@ -206,18 +273,49 @@ NSURL* filename = nil;
             while (i < [format length] && [format characterAtIndex:i] != '}') ++i;
             if (i >= [format length]) break;
             NSString *key = [format substringWithRange:NSMakeRange(lastPos, i - lastPos)];
-            NSString *val = [dict objectForKey:key];
-            if (val)
-                [s appendString:val];
-            else {
-                NSMutableString* authors = [dict objectForKey:@"author"];
-                if ([key isEqualTo:@"authors"]) {
-                    [authors replaceOccurrencesOfString:@" and " withString:@"," options:NSLiteralSearch range:NSMakeRange(0, [authors length])];
-                    [s appendString:authors];
-                } else if ([key isEqualTo:@"author1"]) {
-                    NSString* a1 = [[authors componentsSeparatedByString:@" and "] objectAtIndex:0];
-                    [s appendString:a1];
+            
+            NSString* authors = [[[dict objectForKey:@"author"]
+                                  stringByReplacingOccurrencesOfString:@"{" withString:@""] stringByReplacingOccurrencesOfString:@"}" withString:@""];
+            if ([key isEqualTo:@"authors"]) {
+                NSArray *aus = [authors componentsSeparatedByString:@" and "];
+                int counter = 0;
+                for(NSString *au in aus) {
+                    if (counter == 0) {
+                        [s appendString:au];
+                    } else {
+                        if ([locale isEqualToString:@"en"]) {
+                            NSArray *auf = [[au stringByAppendingString:@","] componentsSeparatedByString:@","];
+                            [s appendFormat:@", %@ %@",
+                             [(NSString*)[auf objectAtIndex:1] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \t\n\r"]],
+                             [(NSString*)[auf objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" \t\n\r"]]];
+                        }
+                        else {
+                            NSString *aut = [au stringByReplacingOccurrencesOfString:@", " withString:@"、"];
+                            [s appendFormat:@"、%@", aut];
+                        }
+                    }
+                    ++counter;
                 }
+            } else if ([key isEqualTo:@"author1"]) {
+                NSString* a1 = [[authors componentsSeparatedByString:@" and "] objectAtIndex:0];
+                [s appendString:a1];
+            } else if ([key isEqualTo:@"pages"]) {
+                NSString *pages = [[dict objectForKey:key] stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
+                if (pages) {
+                if ([locale isEqualToString:@"en"]){
+                    if ([pages rangeOfString:@"-"].location != NSNotFound)
+                        [s appendString:@"pp."];
+                    else
+                        [s appendString:@"p."];
+                    [s appendString:pages];
+                } else {
+                    [s appendFormat:@"第%@页", pages];
+                }
+                }
+            } else {
+                NSString *val = [dict objectForKey:key];
+                if (val)
+                    [s appendString:val];
             }
             lastPos = i+1;
         }
@@ -324,6 +422,8 @@ NSURL* filename = nil;
 }
 
 - (void)windowWillClose:(NSNotification *)notification {
+    NSString *path=[[NSBundle mainBundle]pathForResource:@"Settings" ofType:@".plist"];
+    [plist writeToFile:path atomically:YES];
     [NSApp terminate:self];
 }
 
