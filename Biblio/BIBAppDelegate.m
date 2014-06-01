@@ -12,11 +12,6 @@
 
 @implementation BIBAppDelegate
 
-NSArray* fields;
-NSMutableDictionary *plist;
-BIBDIctionaryTableSource *bibEntry;
-NSURL* filename = nil;
-BIBPrefWindowController *prefWindowControl = nil;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -33,6 +28,8 @@ BIBPrefWindowController *prefWindowControl = nil;
     }
     
     [_mainTable setDataSource:bibEntries];
+    [_mainTable setTarget:self];
+    [_mainTable setDoubleAction:@selector(rowDoubleClicked:)];
     
     // init format strings
     NSString *path=[[NSBundle mainBundle]pathForResource:@"Settings" ofType:@".plist"];
@@ -41,6 +38,9 @@ BIBPrefWindowController *prefWindowControl = nil;
     bibEntry = [BIBDIctionaryTableSource alloc];
     
     [_selTable setDataSource:bibEntry];
+    
+    // init pdfview
+    [_pdfview setAllowsDragging:YES];
     // Insert code here to initialize your application
 }
 
@@ -62,6 +62,17 @@ BIBPrefWindowController *prefWindowControl = nil;
     [_mainTable setDelegate:self];
 }
 
+- (IBAction)rowDoubleClicked:(id)sender
+{
+    NSInteger row = [_mainTable selectedRow];
+    if (row < 0) return;
+    NSMutableDictionary *dict = [bibEntries objectAt:row];
+    if (!dict) return;
+    NSString *pdf = [dict valueForKey:@"pdf"];
+    if (!pdf) return;
+    [[NSWorkspace sharedWorkspace] openFile:[[NSURL URLWithString:pdf] path]];
+}
+
 - (void) tableViewSelectionDidChange: (NSNotification *) notification
 {
     NSInteger row = [_mainTable selectedRow];
@@ -70,8 +81,17 @@ BIBPrefWindowController *prefWindowControl = nil;
         //do stuff for the no-rows-selected case
     }
     else {
-        [bibEntry initWithDictionary:[bibEntries objectAt:row]];
+        NSMutableDictionary *ent = [bibEntries objectAt:row];
+        [bibEntry initWithDictionary:ent];
         [_selTable reloadData];
+        [_pdfview setTable:_selTable forDict:ent];
+        NSString* pdf = [ent objectForKey:@"pdf"];
+        if (pdf) {
+            pdfdoc = [[PDFDocument alloc] initWithURL:[[NSURL alloc] initWithString:pdf]];
+            [_pdfview setDocument:pdfdoc];
+        }
+        else
+            [_pdfview setDocument:nil];
         // do stuff for the selected row
     }
     

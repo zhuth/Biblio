@@ -23,6 +23,8 @@
 		67C9B6B6193357B5009EEE19 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 67C9B6B4193357B5009EEE19 /* InfoPlist.strings */; };
 		67C9B6B8193357B5009EEE19 /* BiblioTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C9B6B7193357B5009EEE19 /* BiblioTests.m */; };
 		67C9B6C3193370B9009EEE19 /* BIBDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C9B6C2193370B9009EEE19 /* BIBDataSource.m */; };
+		67EB2757193AC4B6002FB10F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67EB2756193AC4B6002FB10F /* Quartz.framework */; };
+		67EB275D193ACC49002FB10F /* BIBPDFView.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EB275C193ACC49002FB10F /* BIBPDFView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,9 @@
 		67C9B6B7193357B5009EEE19 /* BiblioTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BiblioTests.m; sourceTree = "<group>"; };
 		67C9B6C1193370B9009EEE19 /* BIBDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BIBDataSource.h; sourceTree = "<group>"; };
 		67C9B6C2193370B9009EEE19 /* BIBDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BIBDataSource.m; sourceTree = "<group>"; };
+		67EB2756193AC4B6002FB10F /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		67EB275B193ACC49002FB10F /* BIBPDFView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BIBPDFView.h; sourceTree = "<group>"; };
+		67EB275C193ACC49002FB10F /* BIBPDFView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BIBPDFView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +76,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				67C9B68E193357B5009EEE19 /* Cocoa.framework in Frameworks */,
+				67EB2757193AC4B6002FB10F /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +114,7 @@
 		67C9B68C193357B5009EEE19 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				67EB2756193AC4B6002FB10F /* Quartz.framework */,
 				67C9B68D193357B5009EEE19 /* Cocoa.framework */,
 				67C9B6AC193357B5009EEE19 /* XCTest.framework */,
 				67C9B68F193357B5009EEE19 /* Other Frameworks */,
@@ -129,6 +136,8 @@
 			isa = PBXGroup;
 			children = (
 				6755246319372E22006A1421 /* BIBDIctionaryTableSource.h */,
+				67EB275B193ACC49002FB10F /* BIBPDFView.h */,
+				67EB275C193ACC49002FB10F /* BIBPDFView.m */,
 				6755246419372E22006A1421 /* BIBDIctionaryTableSource.m */,
 				67C9B69F193357B5009EEE19 /* BIBAppDelegate.h */,
 				67C9B6A0193357B5009EEE19 /* BIBAppDelegate.m */,
@@ -279,6 +288,7 @@
 				6755246519372E22006A1421 /* BIBDIctionaryTableSource.m in Sources */,
 				67C9B6A1193357B5009EEE19 /* BIBAppDelegate.m in Sources */,
 				67C9B69A193357B5009EEE19 /* main.m in Sources */,
+				67EB275D193ACC49002FB10F /* BIBPDFView.m in Sources */,
 				67C31BAF1935B4D70093E058 /* BIBPrefWindowController.m in Sources */,
 				67C9B6C3193370B9009EEE19 /* BIBDataSource.m in Sources */,
 			);

@@ -7,16 +7,27 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <Quartz/Quartz.h>
 #import "BIBDataSource.h"
+#import "BIBPrefWindowController.h"
+#import "BIBDictionaryTableSource.h"
+#import "BIBPDFView.h"
 
 @interface BIBAppDelegate : NSObject <NSApplicationDelegate, NSTableViewDelegate> {
     IBOutlet BIBDataSource *bibEntries;
+    NSArray* fields;
+    NSMutableDictionary *plist;
+    BIBDIctionaryTableSource *bibEntry;
+    NSURL* filename;
+    BIBPrefWindowController *prefWindowControl;
+    PDFDocument *pdfdoc;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSScrollView *tableScrollView;
 @property (weak) IBOutlet NSTableView *selTable;
 @property (weak) IBOutlet NSTableView *mainTable;
+@property (weak) IBOutlet BIBPDFView *pdfview;
 
 
 @property (weak) IBOutlet NSTableHeaderView *tableHeader;
