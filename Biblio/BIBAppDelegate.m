@@ -330,6 +330,23 @@
                 if (rg.location != NSNotFound)
                     a1 = [a1 substringToIndex:rg.location];
                 [s appendString:a1];
+            } else if ([key isEqualToString:@"title"] || [key isEqualToString:@"journal"] || [key isEqualToString:@"booktitle"]) {
+                NSString *title =[dict objectForKey:key];
+                if ([locale isEqualToString:@"en"]) {
+                    NSArray *tif = [title componentsSeparatedByString:@" "];
+                    BOOL first = YES;
+                    for(NSString *t in tif) {
+                        if (!first) [s appendString:@" "];
+                        if (first || (![t isEqualToString:@"and"] && ![t isEqualToString:@"the"] && ![t isEqualToString:@"of"])) {
+                            first = NO;
+                            [s appendString:[t capitalizedString]];
+                        } else {
+                            [s appendString:t];
+                        }
+                    }
+                } else {
+                    [s appendString:title];
+                }
             } else if ([key isEqualTo:@"pages"]) {
                 NSString *pages = [[dict objectForKey:key] stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
                 if (pages) {
