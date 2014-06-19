@@ -179,32 +179,25 @@
 }
 
 -(void)saveBib {
-    NSMutableString* zStr = [NSMutableString new];
-    
     NSInteger count = [bibEntries numberOfRowsInTableView:nil];
     
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingToURL:filename error:NULL];
+
     for(NSUInteger i; i < count; ++i) {
         NSMutableDictionary *d = [bibEntries objectAt:i];
-        [zStr appendFormat:@"@%@{%@", [d objectForKey:@"type"], [d objectForKey:@"key"]];
+        NSString *tmpStr = [NSString stringWithFormat:@"@%@{%@", [d objectForKey:@"type"], [d objectForKey:@"key"]];
+        [fileHandle writeData: [tmpStr dataUsingEncoding:NSUTF8StringEncoding]];
+        
         NSEnumerator *enumerator = [d keyEnumerator];
         id key;
         
         while ((key = [enumerator nextObject])) {
             if (![key isEqualToString:@"key"] && ![key isEqualToString:@"type"]) {
-                [zStr appendFormat:@",\n%@ = {%@}", key, [d objectForKey:key]];
+                tmpStr = [NSString stringWithFormat:@",\n%@ = {%@}", key, [d objectForKey:key]];
+                [fileHandle writeData:[tmpStr dataUsingEncoding:NSUTF8StringEncoding]];
             }
         }
-        [zStr appendString:@"}\n"];
-    }
-    
-    NSLog(@"%@ ==> %@", zStr, filename);
-    
-    BOOL zBoolResult = [zStr writeToURL:filename
-                             atomically:YES
-                               encoding:NSUTF8StringEncoding
-                                  error:NULL];
-    if (! zBoolResult) {
-        NSLog(@"writeUsingSavePanel failed");
+        [fileHandle writeData: [@"}\n" dataUsingEncoding:NSUTF8StringEncoding]];
     }
 }
 
