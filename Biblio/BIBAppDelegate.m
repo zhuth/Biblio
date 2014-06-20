@@ -44,6 +44,10 @@
     // init pdfview
     [_pdfview setAllowsDragging:YES];
     
+    if ([plist objectForKey:@"recent"]) {
+        [self openFile:[NSURL URLWithString:[plist objectForKey:@"recent"]]];
+    }
+    
     // Insert code here to initialize your application
 }
 
@@ -104,20 +108,27 @@
     NSOpenPanel* openPanel = [NSOpenPanel openPanel];
     [openPanel setAllowedFileTypes:[NSArray arrayWithObject: @"bib"]];
     if ([openPanel runModal] == NSOKButton){
-           NSURL *fileURL = [openPanel URL];
-        NSError *error;
-        NSString *content = [[NSString alloc]
-                                         initWithContentsOfURL:fileURL
-                                         encoding:NSUTF8StringEncoding
-                                         error:&error];
-            NSLog(@"%@", fileURL);
-            // we now just support bibtex file.
-        [self parseBibcontent:content];
-        
-        filename = fileURL;
-        
-        [_mainTable reloadData];
+        NSURL *fileURL = [openPanel URL];
+        [self openFile:fileURL];
     }
+}
+
+- (void)openFile:(NSURL*)fileURL {
+    [plist setObject:[fileURL absoluteString] forKey:@"recent"];
+    
+    NSError *error;
+    NSString *content = [[NSString alloc]
+                         initWithContentsOfURL:fileURL
+                         encoding:NSUTF8StringEncoding
+                         error:&error];
+    NSLog(@"%@", fileURL);
+    // we now just support bibtex file.
+    [self parseBibcontent:content];
+    
+    filename = fileURL;
+    [_mainTable reloadData];
+    
+    [_window setTitle: [NSString stringWithFormat:@"Biblio - %@", [fileURL path]]];
 }
 
 - (IBAction)_deleteMenuItemClick:(id)sender {
