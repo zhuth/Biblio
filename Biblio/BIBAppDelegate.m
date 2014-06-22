@@ -142,15 +142,13 @@
     [_mainTable removeRowsAtIndexes:[NSIndexSet indexSetWithIndex:i] withAnimation:NSTableViewAnimationEffectFade];
     [bibEntries remove:i];
     [_mainTable endUpdates];
-    
 }
 
 - (IBAction)_pasteMenuItemClick:(id)sender {
     NSString *s = [self readFromPasteboard];
     if (s == nil) return;
     [self parseBibcontent:s];
-    [_mainTable reloadData];
-}
+    [_mainTable reloadData];}
 
 - (IBAction)_saveMenuItemClick:(id)sender {
     if (filename== nil) [self _saveAsMenuItemClick:sender];
@@ -190,6 +188,8 @@
 }
 
 -(void)saveBib {
+    if (filename == nil) return;
+    
     NSInteger count = [bibEntries numberOfRowsInTableView:nil];
     
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingToURL:filename error:NULL];
@@ -210,7 +210,7 @@
         }
         [fileHandle writeData: [@"}\n" dataUsingEncoding:NSUTF8StringEncoding]];
     }
-}
+    }
 
 - (NSMutableDictionary *) currentItem {
     if ([_mainTable selectedRow] < 0) return nil;
@@ -267,8 +267,7 @@
 
 - (IBAction)_newEntryMenuItemClick:(id)sender {
     [bibEntries add:[NSMutableDictionary new]];
-    [_mainTable reloadData];
-}
+    [_mainTable reloadData];}
 
 - (NSString *)input: (NSString *)prompt defaultValue: (NSString *)defaultValue {
     NSAlert *alert = [NSAlert alertWithMessageText: prompt
@@ -477,6 +476,7 @@
 - (void)windowWillClose:(NSNotification *)notification {
     NSString *path=[[NSBundle mainBundle]pathForResource:@"Settings" ofType:@".plist"];
     [plist writeToFile:path atomically:YES];
+    [self saveBib];
     [NSApp terminate:self];
 }
 
